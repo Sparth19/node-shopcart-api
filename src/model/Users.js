@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const Products = require("../model/Products");
 
 const userSchema = mongoose.Schema(
   {
@@ -47,6 +48,13 @@ const userSchema = mongoose.Schema(
   },
   { timestamp: true }
 );
+
+// //reference to product collection/owner
+// userSchema.virtual("products", {
+//   ref: "Products",
+//   localField: "_id",
+//   foreignField: "owner",
+// });
 
 //for hiding password and tokens array
 userSchema.methods.toJSON = function () {
