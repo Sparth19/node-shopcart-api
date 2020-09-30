@@ -5,6 +5,10 @@ const ordersSchema = mongoose.Schema(
   {
     cartItems: [
       {
+        productId: {
+          type: String,
+          required: true,
+        },
         quantity: {
           type: Number,
           required: true,
