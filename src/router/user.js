@@ -42,4 +42,29 @@ router.post("/users/logout", auth, async (req, res) => {
   }
 });
 
+//update user profile
+router.patch("/users/updateProfile/:id", auth, async (req, res) => {
+  const updates = Object.keys(req.body);
+  const allowUpdates = ["name", "email", "address"];
+  const isValid = updates.every((update) => allowUpdates.includes(update));
+
+  if (!isValid) {
+    return res.status(400).send({ error: "No such property to update" });
+  }
+
+  try {
+    const user = await User.findOne({
+      _id: req.params.id,
+    });
+    if (!user) {
+      return res.status(404).send();
+    }
+    updates.forEach((update) => (user[update] = req.body[update]));
+    await user.save();
+    res.send(user);
+  } catch (e) {
+    res.status(400).send(e.toString());
+  }
+});
+
 module.exports = router;
