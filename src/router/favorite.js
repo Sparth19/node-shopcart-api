@@ -6,7 +6,7 @@ const auth = require("../middleware/auth");
 //Read user favorites
 router.get("/favorites/readUserFavorites/", auth, async (req, res) => {
   try {
-    const favorite = await Favorite.find({ owner: req.user._id });
+    const favorite = await Favorite.find({ user: req.user._id });
     //console.log(favorite);
 
     if (!favorite) {
