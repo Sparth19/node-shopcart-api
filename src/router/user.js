@@ -4,7 +4,7 @@ const router = new express.Router();
 const auth = require("../middleware/auth");
 const { sendForgetPasswordEmail } = require("../emails/account");
 
-const nodemailer = require('nodemailer');
+const nodemailer = require("nodemailer");
 
 //post req for sign up
 router.post("/users/signup", async (req, res) => {
@@ -29,10 +29,9 @@ router.post("/users/login", async (req, res) => {
     const token = await user.generateAuthToken();
     res.send({ user, token });
   } catch (e) {
-    res.status(400).send(e.message);
+    res.status(400).send({ e: e.message });
   }
 });
-
 
 router.post("/users/logout", auth, async (req, res) => {
   try {
@@ -83,11 +82,10 @@ router.post("/users/forgetPass", async (req, res) => {
     sendForgetPasswordEmail(user.email, user.name, otp);
     res.status(201).send({ user, otp });
   } catch (e) {
-    console.log(e)
+    console.log(e);
     res.status(400).send(e);
   }
 });
-
 
 //update user password
 router.patch("/users/updatePassword/:id", async (req, res) => {
