@@ -2,6 +2,7 @@ const express = require("express");
 const User = require("../model/Users");
 const router = new express.Router();
 const auth = require("../middleware/auth");
+const { sendForgetPasswordEmail } = require("../emails/account");
 
 const nodemailer = require('nodemailer');
 
@@ -74,46 +75,13 @@ router.patch("/users/updateProfile/:id", auth, async (req, res) => {
 router.post("/users/forgetPass", async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });
-    console.log(user);
+    //console.log(user.email);
     if (!user) {
       return res.status(404).send();
     }
-
     const otp = Math.floor(1000 + Math.random() * 9000);
-
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: 'ayushbhaisha@gmail.com',
-        pass: 'Facebook7575' // Temp password for gmail
-      }
-    });
-
-    const mailOptions = {
-      from: 'ayushbhaisha@gmail.com',
-      to: user.email,
-      subject: 'Verification Code For Reset Password',
-      text: `Hey ${user.name},
-
-
-                We've received a request to reset your password for Shopcart Account.
-                If you didn't make this request ignore this mail. Ohterwise here is the
-                Verfication Code : ${otp} 
-                
-
-                Thanks,
-                The Shopcart Team.`
-    };
-
-    transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log('Email sent: ' + info.response);
-      }
-    });
+    sendForgetPasswordEmail(user.email, user.name, otp);
     res.status(201).send({ user, otp });
-
   } catch (e) {
     console.log(e)
     res.status(400).send(e);
