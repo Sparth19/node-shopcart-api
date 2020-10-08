@@ -20,7 +20,7 @@ router.post("/products/create", auth, async (req, res) => {
 //Update product by authenticated user
 router.patch("/products/updateProduct/:id", auth, async (req, res) => {
     const updates = Object.keys(req.body)
-    const allowUpdates = ["title", "imageUrl", "description", "category"]
+    const allowUpdates = ["title", "short_title", "imageUrl", "description", "category", "price"]
     const isValid = updates.every((update) => allowUpdates.includes(update))
 
     if (!isValid) {
