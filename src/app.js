@@ -3,7 +3,8 @@ const userRouter = require("./router/user");
 const productRouter = require("./router/product");
 const orderRouter = require("./router/order");
 const favoritesRouter = require("./router/favorite");
-require("../src/db/mongoose");
+const http = require('http');
+const db = require("../src/db/mongoose");
 
 const app = express();
 app.use(express.json());
@@ -12,4 +13,9 @@ app.use(productRouter);
 app.use(orderRouter);
 app.use(favoritesRouter);
 
-module.exports = app;
+const server = http.createServer(app);
+const io = require("socket.io").listen(server);
+
+require('./middleware/socket')(app, io, db);
+
+module.exports = server;
