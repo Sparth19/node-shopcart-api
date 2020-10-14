@@ -5,9 +5,12 @@ const orderRouter = require("./router/order");
 const favoritesRouter = require("./router/favorite");
 const http = require("http");
 const db = require("../src/db/mongoose");
+const cors = require("cors");
 const socketio = require("socket.io");
 
 const app = express();
+app.use(cors());
+
 app.use(express.json());
 app.use(userRouter);
 app.use(productRouter);
