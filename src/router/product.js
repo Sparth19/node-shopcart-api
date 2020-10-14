@@ -97,7 +97,7 @@ router.delete("/products/delete/:id", auth, async (req, res) => {
 });
 
 //send feedback to the productowner
-router.get("/products/sendFeedback/", auth, async (req, res) => {
+router.post("/products/sendFeedback/", auth, async (req, res) => {
   // productid msg
   try {
     const product = await Product.findOne({ _id: req.body.productId });
