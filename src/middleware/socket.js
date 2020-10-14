@@ -33,15 +33,14 @@ module.exports = (app, io, db) => {
       //   console.log(user);
       // }
       console.log("received in api");
-      console.log(senderid);
-      console.log(recid);
+      console.log(socket.id);
       // const filter = new Filter()
       // if (filter.isProfane(msg)) {
       //   return callback('Profane words not allowed')
       // }
       //LEFT:0 RIGHT:1
       socket.emit("message", msg);
-      socket.broadcast.to(recid).emit("message", msg);
+      socket.broadcast.to(socket.id).emit("message", msg);
       //io.to(user.room).emit('message', generateMessage(user.username, msg)) //emits to all connections
       callback();
     });
